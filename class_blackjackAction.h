@@ -1,16 +1,25 @@
 #ifndef CLASS_BLACKJACKACTION_H
 #define CLASS_BLACKJACKACTION_H
 
+#include "controlTypes.h"
+#include "class_action.h"
 
 namespace casino{
-
-  typedef enum{HIT,STAND,SPLIT,DOUBLE} blackJackMove;
   
   class blackjackAction : public action {
-    blackJackMove m;    
     
   public:
-    blackJackMove move();
+    enum atype{HIT,STAND,SPLIT,DOUBLE};
+    atype getAtype();
+
+    virtual void print();
+    
+    //Constructor
+    blackjackAction(controlType);
+    
+  private:
+    atype actionType;
+    
   };
   
 }

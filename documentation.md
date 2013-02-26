@@ -1,6 +1,8 @@
 A Casino games framework
 ------------------------------
 
+![Overall design](./casino_framework_design.png)
+
 ##Classes:
 
 ###card

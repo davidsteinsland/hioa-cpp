@@ -18,7 +18,7 @@ namespace cards{
   const int NUM_RANKS=13;
 
   //Suit-names, for printing
-  const std::string suit_name[]={"♣","♥","♠","♦"};
+  const std::string suit_name[]={"SPADES","HEARTS","CLUBS","DIAMONDS"};
   
   //Ranks - both as data and for printing
   const t_rank ranks[NUM_RANKS]=

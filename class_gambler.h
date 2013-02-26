@@ -7,13 +7,12 @@
 #include "class_strategy.h"
 #include "class_action.h"
 #include "class_game.h"
+#include "controlTypes.h"
 
 namespace casino{
   
   //Forward declaration - WHY?
   class game;
-  
-  typedef enum{TERMINAL,NETWORK,GUI,COMPUTER} controlType;
 
   typedef float cash;
   
@@ -37,6 +36,9 @@ namespace casino{
     
     //Put money in wallet
     void giveMoney(cash amount);
+    
+    cash placeBet();
+    
     std::string name();
     
     //getter for readyToPlay

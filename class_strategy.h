@@ -10,11 +10,10 @@ namespace casino{
   
   class strategy{
     gameType t;
-
+    
   public:
     gameType getGameType();
-    virtual action* takeAction(gameState* g)=0;
-    
+    virtual action* takeAction(gameState* g)=0;    
   };
 }
 
