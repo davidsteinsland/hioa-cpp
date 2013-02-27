@@ -5,6 +5,8 @@
 using namespace casino;
 using namespace std;
 
+int gambler::gamblerNr = 0;
+
 gambler::gambler (string fname, string lname)
 {
 	gamblerId = ++gamblerNr;
