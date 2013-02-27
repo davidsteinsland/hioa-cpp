@@ -22,7 +22,7 @@ blackjackAction::blackjackAction (controlType t)
 	}
 }
 
-atype blackjackAction::getAtype ()
+blackjackAction::atype blackjackAction::getAtype ()
 {
 	return actionType;
 }
