@@ -11,14 +11,14 @@ blackjackAction::blackjackAction (controlType t)
 		
 		do
 		{
-			cout << "Hva vil du gjøre? HIT, STAND?" << endl;
+			cout << "Hva vil du gjøre? <1> STAND, <2> for HIT?" << endl;
 			cin >> opt;
-		} while ( opt.compare("HIT") != 0 && opt.compare("STAND") != 0); // case sensitive. Fix!
+		} while ( opt.compare("1") != 0 && opt.compare("2") != 0);
 		
-		if ( opt.compare ("HIT") == 0 )
-			actionType = HIT;
-		else
+		if ( opt.compare ("1") == 0 )
 			actionType = STAND;
+		else
+			actionType = HIT;
 	}
 }
 
