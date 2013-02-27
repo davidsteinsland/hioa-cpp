@@ -12,7 +12,11 @@ blackjackGame::blackjackGame (int players) : game (blackjack, players)
 
 void blackjackGame::playRound ()
 {
-	
+	gambler winner = NULL;
+	while (winner == NULL)
+	{
+		start();
+	}
 }
 
 void blackjackGame::start ()
@@ -45,14 +49,12 @@ void blackjackGame::start ()
 		c.push_back (card);
 	}
 	
-	cout << "Cards dealt; setting game state" << endl;
-	
-	// blackjackState(std::vector<std::vector<cards::card> >, int, int);
-	blackjackState state(cardsv, 0, gamblers.size() - 1);
-	
-	cout << "State set; calling actions" << endl;
+	cout << "Cards dealt; getting actions" << endl;
 	
 	// place bets
 	for (int i = 0; i < gamblers.size(); i++)
+	{
+		blackjackState state(cardsv, i, gamblers.size() - 1);
 		action *action = gamblers.at(i).takeAction (&state);
+	}
 }
