@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "class_blackjackGame.h"
 #include "class_deck.h"
 #include "class_blackjackState.h"
@@ -12,11 +13,6 @@ blackjackGame::blackjackGame (int players) : game (blackjack, players)
 
 void blackjackGame::playRound ()
 {
-	gambler winner = NULL;
-	while (winner == NULL)
-	{
-		start();
-	}
 }
 
 void blackjackGame::start ()
@@ -47,6 +43,26 @@ void blackjackGame::start ()
 		
 		vector<cards::card> c = cardsv.at (i % gamblers.size());
 		c.push_back (card);
+	}
+	
+	// blackjack test
+	for (int i = 0; i < gamblers.size(); i++)
+	{
+		vector<cards::card> playerCards = cardsv[i];
+		int cardsValue = 0;
+		
+		for (int j = 0; j < 2; j++)
+		{
+			cards::t_rank rank = playerCards.at(j).getRank();
+			int v = (v = atoi ( &rank )) > 0 ? v : 10;
+			cardsValue += v;
+		}
+		
+		if ( cardsValue == 21 )
+		{
+			// BLACKJACK !!!!!!!!!!!!
+			cout << "Spilleren " << gamblers.at(i).name() << " fikk blackjack" << endl;
+		}
 	}
 	
 	cout << "Cards dealt; getting actions" << endl;
