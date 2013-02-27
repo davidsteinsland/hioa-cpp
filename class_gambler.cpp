@@ -1,4 +1,5 @@
 #include "class_gambler.h"
+#include "class_blackjackStrategy.h"
 #include <iostream>
 #include <cstdlib>
 
@@ -78,7 +79,7 @@ bool gambler::ready ()
 action* gambler::takeAction (gameState *g)
 {
 	// for (int i = 0; i < strategies.size(); i++)
-	return strategies[0].takeAction (g);
+	return strategies.at(0)->takeAction (g);
 }
 
 void gambler::joinGame (game &g)

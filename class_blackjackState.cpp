@@ -17,17 +17,17 @@ void blackjackState::print ()
 
 vector<cards::card> blackjackState::dealersCards ()
 {
-	return cardsv.at(dealer);
+	return cardsDealt.at(dealer);
 }
 
 vector<cards::card> blackjackState::myCards()
 {
-	return cardsv.at(ourHero);
+	return cardsDealt.at(ourHero);
 }
 
 vector<cards::card> blackjackState::cardsI(int i )
 {
-	return cardsv.at(ourHero).at(i);
+	return cardsDealt.at(i);
 }
 
 int blackjackState::getOurHero ()
