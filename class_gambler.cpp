@@ -14,6 +14,9 @@ gambler::gambler (string fname, string lname)
 	
 	this->firstName = fname;
 	this->lastName = lname;
+	
+	strategies.push_back (new blackjackStrategy(TERMINAL));
+	wallet = 500;
 }
 
 gambler::gambler (controlType t )
@@ -30,6 +33,7 @@ gambler::gambler (controlType t )
 	
 	// how many strategies should we add?
 	strategies.push_back (new blackjackStrategy(t));
+	wallet = 500;
 }
 
 void gambler::giveMoney (cash amount)
@@ -63,6 +67,8 @@ cash gambler::placeBet()
 	}
 	while ( fbet == 0 || fbet > wallet );
 	
+	wallet -= fbet;
+	
 	return fbet;
 }
 
@@ -78,7 +84,7 @@ bool gambler::ready ()
 
 action* gambler::takeAction (gameState *g)
 {
-	// for (int i = 0; i < strategies.size(); i++)
+	// cout << "Skal nå utføre en action...." << endl;
 	return strategies.at(0)->takeAction (g);
 }
 

@@ -3,22 +3,29 @@
 using namespace casino;
 using namespace std;
 
-blackjackAction::blackjackAction (controlType t)
+blackjackAction::blackjackAction (controlType type)
 {
-	if ( t == TERMINAL )
+	if ( type == TERMINAL )
 	{
 		string opt;
+		
+		// cout << "Vi er i TERMINAL, i blackjackAction" << endl;
 		
 		do
 		{
 			cout << "Hva vil du gjøre? <1> STAND, <2> for HIT?" << endl;
 			cin >> opt;
+			// cout << "Svar mottat!" << endl;
 		} while ( opt.compare("1") != 0 && opt.compare("2") != 0);
+		
+		// cout << "Sammenligner svaret ditt..." << endl;
 		
 		if ( opt.compare ("1") == 0 )
 			actionType = STAND;
 		else
 			actionType = HIT;
+		
+		// cout << "Svar registrert!" << endl;
 	}
 }
 
@@ -29,5 +36,6 @@ blackjackAction::atype blackjackAction::getAtype ()
 
 void blackjackAction::print ()
 {
-
+	cout << "Du valgte: " << getAtype() << endl;
+	
 }

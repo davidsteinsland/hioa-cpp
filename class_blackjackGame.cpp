@@ -3,6 +3,7 @@
 #include "class_blackjackGame.h"
 #include "class_deck.h"
 #include "class_blackjackState.h"
+#include "class_blackjackAction.h"
 using namespace casino;
 using namespace std;
 
@@ -19,21 +20,25 @@ void blackjackGame::start ()
 {
 	cout << "Starting round with " << gamblers.size() << " players" << endl;
 	
+	cash bets[gamblers.size()];
+	
+	/*for (int i = 0; i < gamblers.size(); i++)
+	{
+		cout << gamblers.at(i).name() << endl;
+		bets[i] = gamblers.at(i).placeBet();
+	}*/
+	
 	cards::deck deck;
 	deck.shuffle();
 	
 	// the players' cards
 	vector<vector<cards::card> > cardsv;
-	
-	cout << "Dealing cards ..." << endl;
-	
+		
 	// making sure every player is dealt one card
 	// before we're giving the second (from dealer's left-to-right)
 	for (int i = 0, numCards = gamblers.size() * 2; i < numCards; i++)
 	{
 		cards::card card = deck.deal();
-		cout << "cardsv.size() = " << cardsv.size() << endl;
-		cout << "Dealing to player " << (i % gamblers.size()) << endl;
 		
 		int playerNr = i % gamblers.size();
 		
@@ -41,9 +46,10 @@ void blackjackGame::start ()
 		if (cardsv.size() <= playerNr )
 			cardsv.push_back (vector<cards::card>());
 		
-		vector<cards::card> c = cardsv.at (i % gamblers.size());
-		c.push_back (card);
+		cardsv.at (i % gamblers.size()).push_back (card);
 	}
+	
+	cout << "Checking for blackjack" << endl;
 	
 	// blackjack test
 	for (int i = 0; i < gamblers.size(); i++)
@@ -62,15 +68,38 @@ void blackjackGame::start ()
 		{
 			// BLACKJACK !!!!!!!!!!!!
 			cout << "Spilleren " << gamblers.at(i).name() << " fikk blackjack" << endl;
+			// gamblers.at(i).giveMoney ( 1.5 * bets[i] );
 		}
 	}
 	
 	cout << "Cards dealt; getting actions" << endl;
 	
-	// place bets
-	for (int i = 0; i < gamblers.size(); i++)
+	// we are skipping the dealer
+	for (int i = 0; i < gamblers.size() - 1; i++)
 	{
+		cout << "Spiller " << gamblers.at(i).name() << " sin tur" << endl;
 		blackjackState state(cardsv, i, gamblers.size() - 1);
-		action *action = gamblers.at(i).takeAction (&state);
+		blackjackAction *action = (blackjackAction*) (gamblers.at(i).takeAction (&state));
+		
+		switch (action->getAtype())
+		{
+			case blackjackAction::HIT:
+				cout << "Du valgte HIT!" << endl;
+			break;
+			
+			case blackjackAction::STAND:
+				cout << "Du valgte STAND!" << endl;
+				
+				// her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
+			break;
+			
+			default:
+				cout << "Ukjent handling" << endl;
+			break;
+		}
+		
+		// cout << "Du valgte: " << action->getAtype() << endl;
+		
+		// action->print();
 	}
 }
