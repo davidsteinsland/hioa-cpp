@@ -18,11 +18,9 @@ void blackjackGame::playRound ()
 	cout << "Starting round with " << gamblers.size() << " players" << endl << endl;
 	
 	/*cash bets[gamblers.size()];
-	for (int i = 0; i < gamblers.size(); i++)
-		{
-		cout << gamblers.at(i).name() << endl;
-		bets[i] = gamblers.at(i).placeBet();
-	}*/
+	for (vector<gambler>::iterator it = gamblers.begin() ; it != gamblers.end(); ++it)
+		bets[it - gamblers.begin()] = it->placeBet();
+	*/
 	
 	cards::deck deck;
 	deck.shuffle();
@@ -46,35 +44,31 @@ void blackjackGame::playRound ()
 	}
 	
 	// blackjack test
-	for (int i = 0; i < gamblers.size(); i++)
-	{
-		if ( checkBlackjack ( cardsv[i] ) == 0 )
+	for (vector<gambler>::iterator it = gamblers.begin() ; it != gamblers.end(); ++it)
+		if ( checkBlackjack ( cardsv[it - gamblers.begin()] ) == 0 )
 		{
-			// BLACKJACK !!!!!!!!!!!!
-			cout << gamblers.at(i).name() << " fikk blackjack!" << endl;
-			// gamblers.at(i).giveMoney ( 1.5 * bets[i] );
-			
+			cout << it->name() << " fikk blackjack!" << endl;
 			return;
 		}
-	}
 	
 	// we are storing the results in an array for quick access
 	int results[gamblers.size()];
 	
-	// we are skipping the dealer
-	for (int i = 0; i < gamblers.size() - 1; i++)
+	// we are skipping the dealer (last entry in vector)
+	for (vector<gambler>::iterator it = gamblers.begin(); it != gamblers.end() - 1; it++)
 	{
-		cout << "Spiller " << gamblers.at(i).name() << " sin tur" << endl;
+		int idx = it - gamblers.begin();
+		cout << "Spiller " << it->name() << " sin tur" << endl;
 		
-		blackjackState state(cardsv, i, gamblers.size() - 1);
-		blackjackAction *action = (blackjackAction*) (gamblers.at(i).takeAction (&state));
+		blackjackState state(cardsv, idx, gamblers.size() - 1);
+		blackjackAction *action = (blackjackAction*) (it->takeAction (&state));
 		
 		action->print();
 		
 		switch (action->getAtype())
 		{
 			case blackjackAction::HIT:
-				cardsv[i].push_back (deck.deal());
+				cardsv[idx].push_back (deck.deal());
 			break;
 			
 			case blackjackAction::STAND:
@@ -88,8 +82,8 @@ void blackjackGame::playRound ()
 			break;
 		}
 		
-		int res = getCardsValue (cardsv[i]);
-		results[i] = res;
+		int res = getCardsValue (cardsv[idx]);
+		results[idx] = res;
 	}
 	
 	// dealer's score
@@ -100,6 +94,8 @@ void blackjackGame::playRound ()
 	int m = -1; // the current max score
 	
 	// loop through all results
+	// @TODO if the dealer's cardValue code above had been
+	// in the previous loop, this code would go inside that loop as well. 
 	for (int i = 0; i < gamblers.size(); i++)
 	{
 		cout << gamblers[i].name() << " fikk " << results[i] << endl;
@@ -121,9 +117,9 @@ void blackjackGame::playRound ()
 	}
 	
 	cout << endl << "Vinnere:" << endl;
-	for (int i = 0; i < winners.size(); i++)
+	for (vector<pair<gambler, int> >::iterator it = winners.begin(); it != winners.end(); it++)
 	{
-		cout << winners[i].first.name() << " with " << winners[i].second << endl;
+		cout << it->first.name() << " with " << it->second << endl;
 	}
 }
 
