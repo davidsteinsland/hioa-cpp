@@ -36,6 +36,14 @@ blackjackAction::atype blackjackAction::getAtype ()
 
 void blackjackAction::print ()
 {
-	cout << "Du valgte: " << getAtype() << endl;
-	
+	switch (getAtype())
+	{
+		case HIT:
+			cout << "Du valgte HIT!" << endl << endl;
+		break;
+		
+		case STAND:
+			cout << "Du valgte STAND!" << endl << endl;
+		break;
+	}
 }

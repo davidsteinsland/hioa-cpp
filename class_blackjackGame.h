@@ -19,6 +19,10 @@ namespace casino{
 
     //Overridden from game
     virtual void start();
+	
+	// Added by david
+	int getCardsValue(std::vector<cards::card>);
+	int checkBlackjack(std::vector<cards::card>);
     
   };
 

@@ -16,10 +16,12 @@ action* blackjackStrategy::takeAction (gameState *g)
 {
 	// std::cout << "Jeg returnerer nå en action" << std::endl;
 	blackjackState *state = (blackjackState*)g;
-	if ( state->getOurHero() == state->getDealer() )
-	{
-		
-	}
+	std::vector<cards::card> cardsv = state->myCards();
+	std::vector<cards::card> dealer = state->dealersCards();
+	
+	// only one card visible! We choose the first one
+	std::cout << "Du har: " << cardsv[0].name() << std::endl;
+	std::cout << "Dealer har: " << dealer[0].name() << std::endl;
 	
 	return new blackjackAction (TERMINAL);
 }
