@@ -7,25 +7,22 @@ blackjackAction::blackjackAction (controlType type)
 {
 	if ( type == TERMINAL )
 	{
-		string opt;
-		
-		// cout << "Vi er i TERMINAL, i blackjackAction" << endl;
+		int opt;
 		
 		do
 		{
 			cout << "Hva vil du gjøre? <1> STAND, <2> for HIT?" << endl;
 			cin >> opt;
-			// cout << "Svar mottat!" << endl;
-		} while ( opt.compare("1") != 0 && opt.compare("2") != 0);
+		} while ( !(opt >= HIT && opt <= DOUBLE) );
 		
-		// cout << "Sammenligner svaret ditt..." << endl;
-		
-		if ( opt.compare ("1") == 0 )
-			actionType = STAND;
-		else
-			actionType = HIT;
-		
-		// cout << "Svar registrert!" << endl;
+		switch (opt)
+		{
+			case 0:
+				actionType = HIT;
+			case 1:
+				actionType = STAND;
+			break;
+		}
 	}
 }
 
@@ -36,7 +33,7 @@ blackjackAction::atype blackjackAction::getAtype ()
 
 void blackjackAction::print ()
 {
-	switch (getAtype())
+	switch (actionType)
 	{
 		case HIT:
 			cout << "Du valgte HIT!" << endl << endl;
