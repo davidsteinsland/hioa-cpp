@@ -64,6 +64,8 @@ void blackjackGame::playRound ()
 		do
 		{
 			blackjackState state(cardsv, idx, gamblers.size() - 1);
+			state.print();
+			
 			action = (blackjackAction*) (it->takeAction (&state));
 			action->print();
 			
@@ -120,11 +122,11 @@ void blackjackGame::playRound ()
 					results.erase (k);
 	}
 	
-	if ( results.size() == 0)
+	if ( results.size() == 0 || results.size() > 1)
 		cout << "Ingen vinnere. PUSH!" << endl;
 	else
 	{
-		cout << endl << "Vinnere:" << endl;
+		cout << endl << "Vinner:" << endl;
 		for (vector<pair<gambler, int> >::iterator it = results.begin(); it != results.end(); it++)
 			cout << it->first.name() << " med " << it->second << endl;
 	}
@@ -132,7 +134,13 @@ void blackjackGame::playRound ()
 
 void blackjackGame::start ()
 {
-	playRound();
+	string opt;
+	do
+	{
+		playRound();
+		cout << "One more round? Y/N" << endl;
+		cin >> opt;
+	} while ( opt.compare ("Y") == 0 || opt.compare("y") == 0);
 }
 
 /**

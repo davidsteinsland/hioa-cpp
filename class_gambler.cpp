@@ -63,7 +63,7 @@ cash gambler::placeBet()
 		if (fbet < 0)
 			fbet *= -1;
 		else if (fbet == 0) // the user have typed a non-numeric character, or zero
-			cout << "Ugyldig beløp" << endl;;
+			cout << "Ugyldig beløp" << endl;
 	}
 	while ( fbet == 0 || fbet > wallet );
 	
