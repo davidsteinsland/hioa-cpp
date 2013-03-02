@@ -60,28 +60,35 @@ void blackjackGame::playRound ()
 		int idx = it - gamblers.begin();
 		cout << "Spiller " << it->name() << " sin tur" << endl;
 		
-		blackjackState state(cardsv, idx, gamblers.size() - 1);
-		blackjackAction *action = (blackjackAction*) (it->takeAction (&state));
-		
-		action->print();
-		
-		switch (action->getAtype())
+		blackjackAction* action;
+		do
 		{
-			case blackjackAction::HIT:
-				cardsv[idx].push_back (deck.deal());
-			break;
+			blackjackState state(cardsv, idx, gamblers.size() - 1);
+			action = (blackjackAction*) (it->takeAction (&state));
+			action->print();
 			
-			case blackjackAction::STAND:
-				// her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
-				// denne operasjonen må flyttes ut av loop når spillere > 1
-				if ( getCardsValue ( cardsv[gamblers.size() - 1] ) < 17 )
-				{
-					// HIT
-					cardsv[gamblers.size() - 1].push_back (deck.deal());
-				}
-			break;
+			switch (action->getAtype())
+			{
+				case blackjackAction::HIT:
+					cout << "Dealer nytt kort" << endl;
+					cardsv[idx].push_back (deck.deal());
+				break;
+			}
+		} while ( action->getAtype() != blackjackAction::STAND );
+		
+		/**
+		 * her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
+		 * denne operasjonen må flyttes ut av loop når spillere > 1
+		 */
+		if ( getCardsValue ( cardsv[gamblers.size() - 1] ) < 17 )
+		{
+			// HIT
+			cardsv[gamblers.size() - 1].push_back (deck.deal());
 		}
 		
+		/**
+		 * @TODO If BUST, i.e. res > 21, check for any Aces and set them to 1
+		 */
 		int res = getCardsValue (cardsv[idx]);
 		results[idx] = res;
 	}
@@ -93,9 +100,11 @@ void blackjackGame::playRound ()
 	vector<pair<gambler, int> > winners;
 	int m = -1; // the current max score
 	
-	// loop through all results
-	// @TODO if the dealer's cardValue code above had been
-	// in the previous loop, this code would go inside that loop as well. 
+	/**
+	 * loop through all results
+	 * @TODO if the dealer's cardValue code above had been
+	 * in the previous loop, this code would go inside that loop as well.
+	 */
 	for (int i = 0; i < gamblers.size(); i++)
 	{
 		cout << gamblers[i].name() << " fikk " << results[i] << endl;
@@ -128,16 +137,32 @@ void blackjackGame::start ()
 	playRound();
 }
 
+/**
+ * Custom methods added by David.
+ * Somce of the methods would be more applicable some where else; but this
+ * is the only file allowed to edit atm.
+ */
+
+/**
+ * @TODO Ace is currently being calculated as 11. What is a good way to find out if making
+ * it 1 is better?
+ */
+int blackjackGame::getCardValue (cards::card c)
+{
+	cards::t_rank rank = c.getRank();
+		
+	int v = (v = atoi ( &rank )) > 0 ? v : 10;
+	if (rank == 'A')
+		v = 11;
+	return v;
+}
+
 int blackjackGame::getCardsValue (vector<cards::card> cardsv)
 {
 	int cardsValue = 0;
 	
-	for (int j = 0; j < cardsv.size(); j++)
-	{
-		cards::t_rank rank = cardsv[j].getRank();
-		int v = (v = atoi ( &rank )) > 0 ? v : 10;
-		cardsValue += v;
-	}
+	for (vector<cards::card>::iterator it = cardsv.begin(); it < cardsv.end(); it++)
+		cardsValue += getCardValue(*it);
 	
 	return cardsValue;
 }

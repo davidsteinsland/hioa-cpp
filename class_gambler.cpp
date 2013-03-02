@@ -84,7 +84,6 @@ bool gambler::ready ()
 
 action* gambler::takeAction (gameState *g)
 {
-	// cout << "Skal nå utføre en action...." << endl;
 	return strategies.at(0)->takeAction (g);
 }
 
