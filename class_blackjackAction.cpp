@@ -11,7 +11,7 @@ blackjackAction::blackjackAction (controlType type)
 		
 		do
 		{
-			cout << "Hva vil du gjøre? <1> STAND, <2> for HIT?" << endl;
+			cout << "Hva vil du gjøre? (<0> for HIT, <1> STAND)" << endl;
 			cin >> opt;
 		} while ( !(opt >= HIT && opt <= DOUBLE) );
 		
@@ -19,6 +19,7 @@ blackjackAction::blackjackAction (controlType type)
 		{
 			case 0:
 				actionType = HIT;
+			break;
 			case 1:
 				actionType = STAND;
 			break;
