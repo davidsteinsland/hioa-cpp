@@ -70,27 +70,22 @@ void blackjackGame::playRound ()
 			switch (action->getAtype())
 			{
 				case blackjackAction::HIT:
-					cout << "Dealer nytt kort" << endl;
 					cardsv[idx].push_back (deck.deal());
 				break;
 			}
 		} while ( action->getAtype() != blackjackAction::STAND );
 		
-		/**
-		 * her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
-		 * denne operasjonen må flyttes ut av loop når spillere > 1
-		 */
-		if ( getCardsValue ( cardsv[gamblers.size() - 1] ) < 17 )
-		{
-			// HIT
-			cardsv[gamblers.size() - 1].push_back (deck.deal());
-		}
-		
-		/**
-		 * @TODO If BUST, i.e. res > 21, check for any Aces and set them to 1
-		 */
 		int res = getCardsValue (cardsv[idx]);
 		results[idx] = res;
+	}
+	
+	/**
+	 * her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
+	 */
+	if ( getCardsValue ( cardsv[gamblers.size() - 1] ) < 17 )
+	{
+		// HIT
+		cardsv[gamblers.size() - 1].push_back (deck.deal());
 	}
 	
 	// dealer's score
@@ -125,10 +120,13 @@ void blackjackGame::playRound ()
 		}
 	}
 	
-	cout << endl << "Vinnere:" << endl;
-	for (vector<pair<gambler, int> >::iterator it = winners.begin(); it != winners.end(); it++)
+	if ( winners.size() == 0)
+		cout << "Ingen vinnere. PUSH!" << endl;
+	else
 	{
-		cout << it->first.name() << " with " << it->second << endl;
+		cout << endl << "Vinnere:" << endl;
+		for (vector<pair<gambler, int> >::iterator it = winners.begin(); it != winners.end(); it++)
+			cout << it->first.name() << " med " << it->second << endl;
 	}
 }
 
@@ -143,10 +141,6 @@ void blackjackGame::start ()
  * is the only file allowed to edit atm.
  */
 
-/**
- * @TODO Ace is currently being calculated as 11. What is a good way to find out if making
- * it 1 is better?
- */
 int blackjackGame::getCardValue (cards::card c)
 {
 	cards::t_rank rank = c.getRank();
@@ -162,7 +156,13 @@ int blackjackGame::getCardsValue (vector<cards::card> cardsv)
 	int cardsValue = 0;
 	
 	for (vector<cards::card>::iterator it = cardsv.begin(); it < cardsv.end(); it++)
-		cardsValue += getCardValue(*it);
+	{
+		// Ace is automatically 1 if the result is larger than 21.
+		if (it->getRank == 'A' && cardsValue + 11 > 21 )
+			cardsValue += 1;
+		else
+			cardsValue += getCardValue(*it);
+	}
 	
 	return cardsValue;
 }
