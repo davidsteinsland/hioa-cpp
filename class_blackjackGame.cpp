@@ -75,7 +75,7 @@ void blackjackGame::playRound ()
 					cardsv[idx].push_back (deck.deal());
 				break;
 			}
-		} while ( action->getAtype() != blackjackAction::STAND );
+		} while ( action->getAtype() != blackjackAction::STAND &&  getCardsValue (cardsv[idx]) < 21 );
 		
 		int res = getCardsValue (cardsv[idx]);
 		results.push_back ( make_pair (*it, res) );
