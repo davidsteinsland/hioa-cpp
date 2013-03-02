@@ -52,7 +52,6 @@ void blackjackGame::playRound ()
 		}
 	
 	// we are storing the results in an array for quick access
-	// int results[gamblers.size()];
 	vector<pair<gambler, int> > results;
 	
 	// we are skipping the dealer (last entry in vector)
@@ -77,7 +76,6 @@ void blackjackGame::playRound ()
 		} while ( action->getAtype() != blackjackAction::STAND );
 		
 		int res = getCardsValue (cardsv[idx]);
-		// results[idx] = res;
 		results.push_back ( make_pair (*it, res) );
 	}
 	
@@ -92,7 +90,6 @@ void blackjackGame::playRound ()
 	
 	// dealer's score
 	int res = getCardsValue (cardsv[gamblers.size() - 1]);
-	// results[gamblers.size() - 1] = res;
 	results.push_back ( make_pair (gamblers.back(), res));
 	
 	/**
