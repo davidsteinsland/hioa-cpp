@@ -52,7 +52,8 @@ void blackjackGame::playRound ()
 		}
 	
 	// we are storing the results in an array for quick access
-	int results[gamblers.size()];
+	// int results[gamblers.size()];
+	vector<pair<gambler, int> > results;
 	
 	// we are skipping the dealer (last entry in vector)
 	for (vector<gambler>::iterator it = gamblers.begin(); it != gamblers.end() - 1; it++)
@@ -76,7 +77,8 @@ void blackjackGame::playRound ()
 		} while ( action->getAtype() != blackjackAction::STAND );
 		
 		int res = getCardsValue (cardsv[idx]);
-		results[idx] = res;
+		// results[idx] = res;
+		results.push_back ( make_pair (*it, res) );
 	}
 	
 	/**
@@ -90,42 +92,43 @@ void blackjackGame::playRound ()
 	
 	// dealer's score
 	int res = getCardsValue (cardsv[gamblers.size() - 1]);
-	results[gamblers.size() - 1] = res;
-	
-	vector<pair<gambler, int> > winners;
-	int m = -1; // the current max score
+	// results[gamblers.size() - 1] = res;
+	results.push_back ( make_pair (gamblers.back(), res));
 	
 	/**
-	 * loop through all results
-	 * @TODO if the dealer's cardValue code above had been
-	 * in the previous loop, this code would go inside that loop as well.
+	 * Loop through results vector and pops values that are lower than max
+	 * The result is a vector<pair<gambler, int>> with the winner(s)
 	 */
-	for (int i = 0; i < gamblers.size(); i++)
+	int m = -1; // the max point sum
+	for (vector<pair<gambler, int> >::iterator it = results.begin(); it < results.end(); it++)
 	{
-		cout << gamblers[i].name() << " fikk " << results[i] << endl;
-		
-		if ( results[i] > 21 )
-			continue;
-			
-		if ( results[i] >= m )
+		int v = it->second;
+		if (v > 21 )
 		{
-			// new score; erase previous list
-			if (results[i] > m)
-			{
-				winners.erase (winners.begin(), winners.end());
-				m = results[i];
-			}
-			
-			winners.push_back (make_pair (gamblers[i], results[i]));
+			results.erase (it);
+			continue;
 		}
+		
+		if ( v > m )
+		{
+			m = v;
+			// erase all elements up to this one
+			results.erase (results.begin(), it);
+		}
+		
+		if (v >= m)
+			// pop values lower than m
+			for (vector<pair<gambler, int> >::iterator k = it; k < results.end(); k++)
+				if (k->second < m)
+					results.erase (k);
 	}
 	
-	if ( winners.size() == 0)
+	if ( results.size() == 0)
 		cout << "Ingen vinnere. PUSH!" << endl;
 	else
 	{
 		cout << endl << "Vinnere:" << endl;
-		for (vector<pair<gambler, int> >::iterator it = winners.begin(); it != winners.end(); it++)
+		for (vector<pair<gambler, int> >::iterator it = results.begin(); it != results.end(); it++)
 			cout << it->first.name() << " med " << it->second << endl;
 	}
 }
@@ -158,7 +161,7 @@ int blackjackGame::getCardsValue (vector<cards::card> cardsv)
 	for (vector<cards::card>::iterator it = cardsv.begin(); it < cardsv.end(); it++)
 	{
 		// Ace is automatically 1 if the result is larger than 21.
-		if (it->getRank == 'A' && cardsValue + 11 > 21 )
+		if (it->getRank() == 'A' && cardsValue + 11 > 21 )
 			cardsValue += 1;
 		else
 			cardsValue += getCardValue(*it);
