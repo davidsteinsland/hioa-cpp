@@ -128,7 +128,7 @@ void blackjackGame::playRound ()
 			// pop values lower than m
 			for (vector<pair<gambler, int> >::iterator k = it; k < results.end(); k++)
 				if (k->second < m)
-					results.erase (k);
+					results.erase (k--);
 	}
 	
 	if ( results.size() == 0 || results.size() > 1)
