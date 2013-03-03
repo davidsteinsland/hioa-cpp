@@ -75,7 +75,7 @@ void blackjackGame::playRound ()
 					cardsv[idx].push_back (deck.deal());
 				break;
 			}
-		} while ( action->getAtype() != blackjackAction::STAND &&  getCardsValue (cardsv[idx]) < 21 );
+		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (cardsv[idx]) < 1) );
 		
 		int res = getCardsValue (cardsv[idx]);
 		results.push_back ( make_pair (*it, res) );
@@ -98,13 +98,17 @@ void blackjackGame::playRound ()
 	 * Loop through results vector and pops values that are lower than max
 	 * The result is a vector<pair<gambler, int>> with the winner(s)
 	 */
-	int m = -1; // the max point sum
+	int m = -1;
 	for (vector<pair<gambler, int> >::iterator it = results.begin(); it < results.end(); it++)
 	{
 		int v = it->second;
 		if (v > 21 )
 		{
-			results.erase (it);
+			// we have to decrease the iterator by one, because
+			// if the vector contains two players with both having > 21;
+			// then the first one will be erased, and the iterator == results.end(), thus
+			// the last player will not be deleted.
+			results.erase (it--);
 			continue;
 		}
 		
@@ -112,7 +116,7 @@ void blackjackGame::playRound ()
 		{
 			m = v;
 			// erase all elements up to this one
-			results.erase (results.begin(), it);
+			it = results.erase (results.begin(), it);
 		}
 		
 		if (v >= m)
