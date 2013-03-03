@@ -1,5 +1,6 @@
 #include "class_blackjackAction.h"
 #include <iostream>
+#include <limits>
 using namespace casino;
 using namespace std;
 
@@ -7,13 +8,17 @@ blackjackAction::blackjackAction (controlType type)
 {
 	if ( type == TERMINAL )
 	{
-		int opt;
+		unsigned int opt;
 		
 		do
 		{
+			if ( ! cin )
+			{
+				cin.clear();
+				cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			}
 			cout << "Hva vil du gjøre? (<0> for HIT, <1> STAND)" << endl;
-			cin >> opt;
-		} while ( !(opt >= HIT && opt <= DOUBLE) );
+		} while ( !(cin >> opt) || !(opt >= HIT && opt <= DOUBLE) );
 		
 		switch (opt)
 		{
