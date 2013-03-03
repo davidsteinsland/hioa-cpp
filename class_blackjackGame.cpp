@@ -73,6 +73,8 @@ void blackjackGame::playRound ()
 			{
 				case blackjackAction::HIT:
 					cardsv[idx].push_back (deck.deal());
+					
+					cout << "Du fikk: " << cardsv[idx].back().name() << endl;
 				break;
 			}
 		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (cardsv[idx]) < 1) );
