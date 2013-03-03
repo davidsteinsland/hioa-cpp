@@ -21,9 +21,9 @@ namespace casino{
     virtual void start();
 	
 	// Added by david
-	int getCardsValue(std::vector<cards::card>);
-	int getCardValue (cards::card);
-	int checkBlackjack(std::vector<cards::card>);
+	int getCardsValue(std::vector<cards::card>*);
+	int getCardValue (cards::card*);
+	int checkBlackjack(std::vector<cards::card>*);
     
   };
 

@@ -45,7 +45,7 @@ void blackjackGame::playRound ()
 	
 	// blackjack test
 	for (vector<gambler>::iterator it = gamblers.begin() ; it != gamblers.end(); ++it)
-		if ( checkBlackjack ( cardsv[it - gamblers.begin()] ) == 0 )
+		if ( checkBlackjack ( &cardsv[it - gamblers.begin()] ) == 0 )
 		{
 			cout << it->name() << " fikk blackjack!" << endl;
 			return;
@@ -77,9 +77,9 @@ void blackjackGame::playRound ()
 					cout << "Du fikk: " << cardsv[idx].back().name() << endl;
 				break;
 			}
-		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (cardsv[idx]) < 1) );
+		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (&cardsv[idx]) < 1) );
 		
-		int res = getCardsValue (cardsv[idx]);
+		int res = getCardsValue (&cardsv[idx]);
 		results.push_back ( make_pair (*it, res) );
 		
 		cout << "Resultat: " << res << endl;
@@ -88,14 +88,14 @@ void blackjackGame::playRound ()
 	/**
 	 * her må dealer gjøre noe. HIT viss < 17 og STAND >= 17
 	 */
-	if ( getCardsValue ( cardsv[gamblers.size() - 1] ) < 17 )
+	if ( getCardsValue ( &cardsv[gamblers.size() - 1] ) < 17 )
 	{
 		// HIT
 		cardsv[gamblers.size() - 1].push_back (deck.deal());
 	}
 	
 	// dealer's score
-	int res = getCardsValue (cardsv[gamblers.size() - 1]);
+	int res = getCardsValue ( &cardsv[gamblers.size() - 1]);
 	results.push_back ( make_pair (gamblers.back(), res));
 	cout << "Dealer: " << res << endl;
 	
@@ -158,9 +158,9 @@ void blackjackGame::start ()
  * is the only file allowed to edit atm.
  */
 
-int blackjackGame::getCardValue (cards::card c)
+int blackjackGame::getCardValue (cards::card *c)
 {
-	cards::t_rank rank = c.getRank();
+	cards::t_rank rank = c->getRank();
 		
 	int v = (v = atoi ( &rank )) > 0 ? v : 10;
 	if (rank == 'A')
@@ -168,22 +168,22 @@ int blackjackGame::getCardValue (cards::card c)
 	return v;
 }
 
-int blackjackGame::getCardsValue (vector<cards::card> cardsv)
+int blackjackGame::getCardsValue (vector<cards::card>* cardsv)
 {
 	int cardsValue = 0;
-	for (vector<cards::card>::iterator it = cardsv.begin(); it < cardsv.end(); it++)
+	for (vector<cards::card>::iterator it = cardsv->begin(); it < cardsv->end(); it++)
 	{
 		// Ace is automatically 1 if the result is larger than 21.
 		if (it->getRank() == 'A' && cardsValue + 11 > 21 )
 			cardsValue += 1;
 		else
-			cardsValue += getCardValue(*it);
+			cardsValue += getCardValue(&*it);
 	}
 	
 	return cardsValue;
 }
 
-int blackjackGame::checkBlackjack (vector<cards::card> cardsv)
+int blackjackGame::checkBlackjack (vector<cards::card>* cardsv)
 {
 	int cardsValue = getCardsValue (cardsv);
 	
