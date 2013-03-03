@@ -171,7 +171,6 @@ int blackjackGame::getCardValue (cards::card c)
 int blackjackGame::getCardsValue (vector<cards::card> cardsv)
 {
 	int cardsValue = 0;
-	
 	for (vector<cards::card>::iterator it = cardsv.begin(); it < cardsv.end(); it++)
 	{
 		// Ace is automatically 1 if the result is larger than 21.
