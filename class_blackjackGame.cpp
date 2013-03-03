@@ -63,10 +63,10 @@ void blackjackGame::playRound ()
 		blackjackAction* action;
 		do
 		{
-			blackjackState state(cardsv, idx, gamblers.size() - 1);
-			state.print();
+			blackjackState* state = new blackjackState(cardsv, idx, gamblers.size() - 1);
+			state->print();
 			
-			action = (blackjackAction*) (it->takeAction (&state));
+			action = (blackjackAction*) (it->takeAction (state));
 			action->print();
 			
 			switch (action->getAtype())
@@ -77,6 +77,8 @@ void blackjackGame::playRound ()
 					cout << "Du fikk: " << cardsv[idx].back().name() << endl;
 				break;
 			}
+			
+			delete state;
 		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (&cardsv[idx]) < 1) );
 		
 		int res = getCardsValue (&cardsv[idx]);
