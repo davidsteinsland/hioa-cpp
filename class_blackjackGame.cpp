@@ -81,6 +81,8 @@ void blackjackGame::playRound ()
 		
 		int res = getCardsValue (cardsv[idx]);
 		results.push_back ( make_pair (*it, res) );
+		
+		cout << "Resultat: " << res << endl;
 	}
 	
 	/**
@@ -95,6 +97,7 @@ void blackjackGame::playRound ()
 	// dealer's score
 	int res = getCardsValue (cardsv[gamblers.size() - 1]);
 	results.push_back ( make_pair (gamblers.back(), res));
+	cout << "Dealer: " << res << endl;
 	
 	/**
 	 * Loop through results vector and pops values that are lower than max

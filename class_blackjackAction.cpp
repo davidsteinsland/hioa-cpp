@@ -37,11 +37,11 @@ void blackjackAction::print ()
 	switch (actionType)
 	{
 		case HIT:
-			cout << "Du valgte HIT!" << endl << endl;
+			// cout << "Du valgte HIT!" << endl << endl;
 		break;
 		
 		case STAND:
-			cout << "Du valgte STAND!" << endl << endl;
+			// cout << "Du valgte STAND!" << endl << endl;
 		break;
 	}
 }

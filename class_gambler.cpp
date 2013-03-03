@@ -25,6 +25,7 @@ gambler::gambler (controlType t )
 	
 	if (t == TERMINAL)
 	{
+		cout << "Spiller #" << gamblerId << endl;
 		cout << "Hva er fornavnet ditt?" << endl;
 		cin >> firstName;
 		cout << "Hva er etternavnet ditt?" << endl;

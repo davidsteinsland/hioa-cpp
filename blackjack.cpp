@@ -2,7 +2,7 @@
 
 int main ()
 {
-	casino::blackjackGame b;
+	casino::blackjackGame b(2);
 	
 	b.start();
 }
