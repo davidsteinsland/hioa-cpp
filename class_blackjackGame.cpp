@@ -81,6 +81,8 @@ void blackjackGame::playRound ()
 			delete state;
 		} while ( (action->getAtype() != blackjackAction::STAND) && (checkBlackjack (&cardsv[idx]) < 1) );
 		
+		delete action;
+		
 		int res = getCardsValue (&cardsv[idx]);
 		results.push_back ( make_pair (*it, res) );
 		
