@@ -46,7 +46,6 @@ pair<int,int> computer_strategy::move (game_state* s)
 		{
 			for (int j = 0; j < matrix_size; j++)
 			{
-				if (game_size
 				// find out which point we must select in order to win
 				if (i == 0)
 				{
